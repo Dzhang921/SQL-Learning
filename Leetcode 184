@@ -1,0 +1,7 @@
+with cte as (
+select *, dense_rank() over (partition by departmentid order by salary desc) as rk from employee
+)
+
+select department.name as 'Department', cte.name as 'Employee', salary from cte 
+join department on cte.departmentid = department.id
+where rk = 1
