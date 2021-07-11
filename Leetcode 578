@@ -1,0 +1,18 @@
+with cte as (
+select question_id, count(question_id) as total from survey_log
+    where action = 'show'
+    group by question_id
+    
+),
+cte2 as (
+select question_id, count(*) as ans from survey_log
+    where action = 'answer'
+    group by question_id
+)
+
+
+
+select cte.question_id  as survey_log from cte
+join cte2 on cte.question_id = cte2.question_id
+order by ans/total desc
+limit 1
