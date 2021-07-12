@@ -1,0 +1,12 @@
+with request as (
+select requester_id, count(*) as num from request_accepted
+    group by requester_id
+union all
+select accepter_id, count(*) from request_accepted
+    group by accepter_id
+)
+
+select requester_id as id, sum(num) as num from request
+group by requester_id
+order by 2 desc
+limit 1
