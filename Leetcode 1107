@@ -1,0 +1,10 @@
+with cte as (
+select distinct user_id, min(activity_date) as first from traffic
+    where activity = 'login'
+    group by user_id
+)
+
+select first as login_date, count(user_id) as user_count from cte
+where first between date_sub('2019-06-30', interval 90 day) and '2019-06-30'
+group by first
+order by login_date
