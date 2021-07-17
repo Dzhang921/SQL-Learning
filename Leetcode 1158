@@ -1,0 +1,8 @@
+with cte as (
+select buyer_id, count(order_id) as total from orders
+    where year(order_date) = 2019
+    group by buyer_id, year(order_date)
+)
+
+select user_id as buyer_id, join_date, coalesce(total,0) as orders_in_2019 from users
+left join cte on users.user_id = cte.buyer_id
