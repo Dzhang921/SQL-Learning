@@ -1,0 +1,6 @@
+with cte as (
+select log_id, log_id - row_number() over () as rk from logs
+    )
+
+select min(log_id) as START_ID, max(log_id) as END_ID from cte
+group by rk
