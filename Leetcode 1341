@@ -1,0 +1,15 @@
+# Write your MySQL query statement below
+
+select name as results from (
+select name, dense_rank() over (order by count(movie_id) desc, name asc) as rk from users
+join movie_rating on users.user_id = movie_rating.user_id
+group by movie_rating.user_id) a
+where a.rk =1
+
+    union all
+select title from (
+select title, rank() over (order by avg(rating) desc, title asc) as rk from movie_rating
+join movies on movies.movie_id = movie_rating.movie_id
+where year(created_at) = 2020 and month(created_at) =2
+group by movie_rating.movie_id) b
+where b.rk =1
