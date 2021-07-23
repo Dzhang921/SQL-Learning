@@ -1,0 +1,9 @@
+# Write your MySQL query statement below
+with cte as (
+select stock_name, 
+case when operation = 'sell' then price
+    when operation ='buy' then price*(-1) end as price
+from stocks)
+
+select stock_name, sum(price) as capital_gain_loss from cte
+group by stock_name
