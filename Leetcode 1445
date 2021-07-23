@@ -1,0 +1,13 @@
+# Write your MySQL query statement below
+with apple as (
+select sale_date, sold_num from sales
+where fruit = 'apples'
+),
+orange as (
+select sale_date, sold_num from sales
+    where fruit = 'oranges'
+)
+
+select apple.sale_date, apple.sold_num -orange.sold_num as diff from apple
+join orange on apple.sale_date = orange.sale_date
+group by sale_date
