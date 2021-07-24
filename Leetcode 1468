@@ -1,0 +1,12 @@
+# Write your MySQL query statement below
+with tax as (
+select company_id,
+    case when max(salary) < 1000 then 1
+    when max(salary) >=1000 and max(salary)<=10000 then 0.76
+    else 0.51 end as tax
+from salaries
+    group by company_id
+)
+
+select salaries.company_id, employee_id, employee_name, round(salary*tax,0) as salary from salaries 
+join tax on salaries.company_id = tax.company_id
