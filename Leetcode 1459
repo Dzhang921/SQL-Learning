@@ -1,0 +1,7 @@
+# Write your MySQL query statement below
+select a.id as P1, 
+b.id as P2,
+abs(a.x_value-b.x_value)*abs(a.y_value - b.y_value) as area
+from points a
+join points b where a.x_value <> b.x_value and a.y_value <> b.y_value and a.id < b.id
+order by area desc, P1, P2
