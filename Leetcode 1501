@@ -1,0 +1,16 @@
+# Write your MySQL query statement below
+with global as(
+select avg(duration) as glb_avg from calls
+),
+all_call as (
+select left(phone_number,3) as code, duration from calls
+join person on calls.caller_id = person.id
+union all
+select left(phone_number,3), duration from calls
+join person on calls.callee_id = person.id)
+
+select name as country from country
+where country_code in 
+(select code from all_call
+group by code
+having avg(duration) > (select glb_avg from global))
