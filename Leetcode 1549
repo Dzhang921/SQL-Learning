@@ -1,0 +1,8 @@
+# Write your MySQL query statement below
+with cte as(
+select product_id, order_id, order_date, dense_rank() over (partition by product_id order by order_date desc) as rw from orders)
+
+select product_name, cte.product_id, order_id, order_date from cte
+join products on products.product_id = cte.product_id
+where rw=1
+order by 1, 2,3
