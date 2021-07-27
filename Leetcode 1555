@@ -1,0 +1,14 @@
+# Write your MySQL query statement below
+with cte as (
+select user_id, credit from users
+    union all
+select paid_by, -1*amount from transactions
+    union all
+select paid_to, amount from transactions
+)
+
+select cte.user_id, user_name, sum(cte.credit) as credit,
+case when sum(cte.credit) < 0 then'Yes' else 'No' end as credit_limit_breached
+from cte
+join users on users.user_id = cte.user_id
+group by cte.user_id
