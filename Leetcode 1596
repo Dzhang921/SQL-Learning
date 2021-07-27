@@ -1,0 +1,9 @@
+# Write your MySQL query statement below
+with cte as (
+select customer_id, product_id, dense_rank() over (partition by customer_id order by count(order_id)desc) as rk from orders
+group by customer_id, product_id
+)
+
+select customer_id, cte.product_id, product_name from cte
+join products on cte.product_id = products.product_id
+where rk=1
