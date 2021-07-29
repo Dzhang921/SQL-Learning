@@ -1,0 +1,8 @@
+# Write your MySQL query statement below
+with cte as (
+select sum(apple_count) as apple, sum(orange_count) as orange from boxes
+union all
+select sum(chests.apple_count), sum(chests.orange_count) from boxes
+join chests on boxes.chest_id = chests.chest_id)
+
+select sum(apple) as apple_count, sum(orange) as orange_count from cte
