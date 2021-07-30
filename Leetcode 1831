@@ -1,0 +1,6 @@
+# Write your MySQL query statement below
+select transaction_id from
+(select transaction_id, 
+dense_rank() over (partition by day(day) order by amount desc) as rk from transactions) a
+where a.rk = 1
+order by 1 
