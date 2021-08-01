@@ -1,0 +1,12 @@
+# Write your MySQL query statement below
+with cte as (
+select order_id, 
+count(product_id) as ct,
+sum(quantity) as total,
+avg(quantity) as average,
+max(quantity) as up
+from OrdersDetails
+group by order_id)
+
+select order_id from cte
+where up > (select max(average) from cte)
