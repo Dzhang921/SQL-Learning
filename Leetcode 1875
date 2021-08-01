@@ -1,0 +1,10 @@
+# Write your MySQL query statement below
+with cte as (
+select salary, row_number() over (order by salary asc) as rw  from employees
+group by salary
+having count(employee_id) > 1
+    )
+
+select employee_id, name, cte.salary, cte.rw as team_id from employees
+join cte on employees.salary = cte.salary
+order by team_id asc, employee_id
