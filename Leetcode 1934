@@ -1,0 +1,15 @@
+# Write your MySQL query statement below
+with cte as (
+select user_id, count(*) as confirm from confirmations
+where action = 'confirmed'
+group by user_id),
+total_confirm as (
+select signups.user_id, ifnull(confirm, 0) as conf from signups
+left join cte on signups.user_id = cte.user_id),
+total_request as (
+select signups.user_id, ifnull(count(action),0) as total from signups
+left join confirmations on signups.user_id = confirmations.user_id
+group by 1)
+
+select total_confirm.user_id, round(ifnull(conf/total, 0),2) as confirmation_rate from total_confirm
+join total_request on total_confirm.user_id = total_request.user_id
